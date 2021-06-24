@@ -1,5 +1,7 @@
 package com.example.Gym.service;
 
+import com.example.Gym.model.DTO.UserDTO;
+import com.example.Gym.model.Member;
 import com.example.Gym.model.User;
 import com.example.Gym.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,4 +20,5 @@ public class UserService {
     public User login(String email, String password) {
         return userRepository.findByEmailAndPassword(email,password);
     }
+    public User save(Member member){return userRepository.save(member);}
 }
