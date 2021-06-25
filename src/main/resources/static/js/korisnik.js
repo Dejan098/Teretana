@@ -43,6 +43,7 @@ function formToJSON(email, password) {
         {
             "email": email,
             "password": password
+
         }
     );
 }

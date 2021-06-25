@@ -24,14 +24,6 @@ $(document).on("submit", "form", function(event){
             console.log(data);
 
             alert(email + " je uspešno registrovan");
-            // postavljamo ulogovanog korisnika na localStorage
-            // na isti nacin moze da se postavi i email, username itd.
-
-            // kasnije u bilo kom js fajlu moze da se dobavi ulogovani korisnik ili njegova uloga na sledeci nacin:
-
-            // ispisujemo ulogu u konzoli da bismo potvrdili da je sve u redu
-
-            // redirektujemo se na neku drugu stranicu
             window.location.href = "index.html";
         },
         error: function (data) {

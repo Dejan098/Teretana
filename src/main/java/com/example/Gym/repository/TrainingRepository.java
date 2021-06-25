@@ -1,5 +1,6 @@
 package com.example.Gym.repository;
 
+import com.example.Gym.model.Schedule;
 import com.example.Gym.model.Training;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,4 +14,6 @@ public interface TrainingRepository extends JpaRepository<Training,Integer> {
     Set<Training> getAllByType(String type);
 
     Set<Training> getAllByDescription(String description);
+
+    Training findOneBySchedule(Schedule schedule);
 }

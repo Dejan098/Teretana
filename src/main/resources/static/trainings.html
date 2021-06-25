@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>treninzi</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/trainings.js"></script>
+</head>
+<body>
+    <div id="trainings">
+        <h1>Svi treninzi</h1>
+        <br>
+        <label for="kriterijum">izaberi kriterijum pretrage:</label>
+
+        <select name="kriterijum" id="kriterijum">
+            <option value="naziv">naziv</option>
+            <option value="tip">tip</option>
+            <option value="opis">opis</option>
+            <option value="cena">cena</option>
+            <option value="vreme">vreme</option>
+        </select>
+        <input type="search" id="naziv" name="q" placeholder="Unesite naziv treninga"/>
+        <input type="search" id="tip" name="q" placeholder="Unesite tip"/>
+        <input type="search" id="opis" name="q" placeholder="Unesite opis"/>
+        <input type="search" id="cena" name="q" placeholder="Unesite cenu termina"/>
+        <input type="search" id="vreme" type="date" name="q" placeholder="Unesite vreme treninga"/>
+
+        <input type="submit" id="btnSearchTraining"/>
+        <br>
+
+        <div class="container">
+            <table id="training">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Naziv treninga</th>
+                    <th>Tip treninga</th>
+                    <th>opis</th>
+                    <th>trajanje</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

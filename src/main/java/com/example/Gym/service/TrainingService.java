@@ -1,6 +1,7 @@
 package com.example.Gym.service;
 
 import com.example.Gym.model.Member;
+import com.example.Gym.model.Schedule;
 import com.example.Gym.model.Training;
 import com.example.Gym.model.User;
 import com.example.Gym.repository.TrainerRepository;
@@ -29,5 +30,9 @@ public class TrainingService {
     }
 
     public Set<Training> findallbyopis(String opis) { return trainingRepository.getAllByDescription(opis);
+    }
+
+    public Training findallbytermin(Schedule schedule) {
+        return trainingRepository.findOneBySchedule(schedule);
     }
 }

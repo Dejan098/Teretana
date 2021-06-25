@@ -29,7 +29,7 @@ public class Training {
     @ManyToOne(fetch = FetchType.EAGER)
     private Trainer trainer;
 
-    @Transient
+
     @OneToOne(mappedBy = "training", cascade = CascadeType.ALL)
     private Schedule schedule;
 
