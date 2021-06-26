@@ -14,20 +14,18 @@ $(document).on("submit", "form", function(event){
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/users/registration",
+        url: "http://localhost:8081/auth/signup",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
-        success: function (data) {
+        success: function () {
             // data = ulogovani korisnik koji je vratila metoda iz kontrolera
             // mozemo tu vrednost da ispisemo u konzoli
-            console.log(data);
-
-            alert(email + " je uspešno registrovan");
+            alert("Uspesna registracija");
             window.location.href = "index.html";
         },
-        error: function (data) {
-            console.log(data);
+        error: function (error) {
+
             alert("Greska");
         }
     });

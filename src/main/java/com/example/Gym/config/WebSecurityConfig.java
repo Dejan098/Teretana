@@ -1,10 +1,10 @@
 package com.example.Gym.config;
 
 
-import com.gym.dostava.security.TokenUtils;
-import com.gym.dostava.security.auth.RestAuthenticationEntryPoint;
-import com.gym.dostava.security.auth.TokenAuthenticationFilter;
-import com.gym.dostava.service.UserServiceDetails;
+import com.example.Gym.security.TokenUtils;
+import com.example.Gym.security.auth.RestAuthenticationEntryPoint;
+import com.example.Gym.security.auth.TokenAuthenticationFilter;
+import com.example.Gym.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,9 +80,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-        web.ignoring().antMatchers(HttpMethod.POST, "/auth/**","/medications/MedicationsSearch","/medications/MedicationsSearchh","/medications/getOneMedication","/pharmacy/PharmaciesSearch","/pharmacy/PharmaciesSearchbyaddress","/pharmacy/filterbyrating","/medications/getpharmaciesprice","/medications/filterType");
+        web.ignoring().antMatchers(HttpMethod.POST, "/auth/**","/medications/MedicationsSearch","/medications/MedicationsSearchh","/medications/getOneMedication","/pharmacy/PharmaciesSearch","/pharmacy/PharmaciesSearchbyaddress","/pharmacy/filterbyrating","/medications/getpharmaciesprice","/medications/filterType","/training/search");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico",
-                "/**/*.css", "/**/*.js", "/favicon.ico", "/**/*.html","/medications/getTypeMedication","/pharmacy/allpharmacies","/medications/allmedications","/medications/allmedicationss","/pharmacy/allpharmaciessortbyname","/pharmacy/allpharmaciessortbyaddress","/pharmacy/allpharmaciessortbyrating");
+                "/**/*.css", "/**/*.js", "/favicon.ico", "/**/*.html","/medications/getTypeMedication","/pharmacy/allpharmacies","/medications/allmedications","/medications/allmedicationss","/pharmacy/allpharmaciessortbyname","/pharmacy/allpharmaciessortbyaddress","/pharmacy/allpharmaciessortbyrating","/training/getall");
 
 
     }
