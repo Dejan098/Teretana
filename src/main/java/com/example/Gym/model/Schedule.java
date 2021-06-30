@@ -16,14 +16,14 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_schedule")
     private Integer id;
 
+
     @Column
     private Integer price;
 
     @Column
     private Date beginDate;
 
-    @OneToOne
-    @JoinColumn(name = "training_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Training training;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -34,5 +34,69 @@ public class Schedule {
     @JoinTable(name = "hall_schedules", joinColumns = @JoinColumn(name = "hall_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
     private Set<Hall> halls = new HashSet<Hall>();
 
+    public Schedule(Integer id, Integer price, Date beginDate) {
+        this.id = id;
+        this.price = price;
+        this.beginDate = beginDate;
+    }
 
+    public Schedule() {
+    }
+
+    public Schedule(Integer id, Integer price, Date beginDate, Training training, FitnessCenter fitnesraspored, Set<Hall> halls) {
+        this.id = id;
+        this.price = price;
+        this.beginDate = beginDate;
+        this.training = training;
+        this.fitnesraspored = fitnesraspored;
+        this.halls = halls;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+
+    public FitnessCenter getFitnesraspored() {
+        return fitnesraspored;
+    }
+
+    public void setFitnesraspored(FitnessCenter fitnesraspored) {
+        this.fitnesraspored = fitnesraspored;
+    }
+
+    public Set<Hall> getHalls() {
+        return halls;
+    }
+
+    public void setHalls(Set<Hall> halls) {
+        this.halls = halls;
+    }
 }

@@ -1,6 +1,10 @@
 package com.example.Gym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("training")
@@ -30,8 +34,9 @@ public class Training {
     private Trainer trainer;
 
 
-    @OneToOne(mappedBy = "training", cascade = CascadeType.ALL)
-    private Schedule schedule;
+    @JsonIgnore
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
+    private Set<Schedule> schedule=new HashSet<Schedule>();
 
     public Training(Integer id, String name, String description, String type, String duration) {
         this.id = id;

@@ -1,6 +1,7 @@
 package com.example.Gym.service;
 
 import com.example.Gym.model.Schedule;
+import com.example.Gym.model.Training;
 import com.example.Gym.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class ScheduleService {
     @Autowired
     public void setScheduleRepository(ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
+    }
+
+    public Set<Schedule> getallschedules() {return scheduleRepository.getAllBy();
     }
 
     public Set<Schedule> findallbycena(Integer cena) {
