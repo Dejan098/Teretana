@@ -28,7 +28,9 @@ $(document).ready(function () {
 
 				localStorage.setItem('token', data['accessToken']);
 				localStorage.setItem('role', data['role']);
-				window.location.href = "index.html";
+				if (data['role']==='member'){
+					window.location.href = "memberhomepage.html";
+				}
 
 
 	        },

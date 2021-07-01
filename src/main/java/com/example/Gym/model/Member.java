@@ -3,10 +3,8 @@ package com.example.Gym.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +17,24 @@ public class Member extends User {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
-    private Set<Training> trainings = new HashSet<Training>();
+    @ManyToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private Set<Schedule> schedule;
 
 
+    public Member(Set<Schedule> schedule) {
+        this.schedule = schedule;
+    }
 
+    public Member(Integer id, String korisnickoime, String password, String namee, String surname, String phoneNumber, String email, Date birthDate, String rola, Boolean active, Set<Schedule> schedule) {
+        super(id, korisnickoime, password, namee, surname, phoneNumber, email, birthDate, rola, active);
+        this.schedule = schedule;
+    }
+
+    public Set<Schedule> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Set<Schedule> schedule) {
+        this.schedule = schedule;
+    }
 }

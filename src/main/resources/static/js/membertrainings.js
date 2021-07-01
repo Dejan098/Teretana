@@ -11,6 +11,11 @@ $(document).ready(function () {
                 row += "<td>" + data[i]['price'] + "</td>";
                 row += "<td>" + data[i]['beginDate'] + "</td>";
                 row += "<td>" + data[i]['training']['name'] + "</td>";
+                var btn = "<button class='btnRegisterAppointment' id = " + data[i]['id'] + ">Reserve Schedule</button>";
+
+
+                row += "<td>" + btn + "</td>";
+
 
 
 
@@ -121,6 +126,11 @@ $(document).on('click', '#btnSortbyDatum', function () {    // Čeka se trenutak
                 row += "<td>" + data[i]['price'] + "</td>";
                 row += "<td>" + data[i]['beginDate'] + "</td>";
                 row += "<td>" + data[i]['training']['name'] + "</td>";
+                var btn = "<button class='btnRegisterAppointment' id = " + data[i]['id'] + ">Reserve Schedule</button>";
+
+
+                row += "<td>" + btn + "</td>";
+
 
                 $('#schedule').append(row);                        // ubacujemo kreirani red u tabelu čiji je id = employees
             }
@@ -146,6 +156,10 @@ $(document).on('click', '#btnSortbyCena', function () {    // Čeka se trenutak 
                 row += "<td>" + data[i]['price'] + "</td>";
                 row += "<td>" + data[i]['beginDate'] + "</td>";
                 row += "<td>" + data[i]['training']['name'] + "</td>";
+                var btn = "<button class='btnRegisterAppointment' id = " + data[i]['id'] + ">Reserve Schedule</button>";
+
+
+                row += "<td>" + btn + "</td>";
 
                 $('#schedule').append(row);                        // ubacujemo kreirani red u tabelu čiji je id = employees
             }
@@ -154,6 +168,29 @@ $(document).on('click', '#btnSortbyCena', function () {    // Čeka se trenutak 
             console.log("ERROR : ", data);
         }
     });
+});
+$(document).on('click', '.btnRegisterAppointment', function(){
+    var id=this.id;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/shcedule/reserveschedule",
+        dataType: "json",
+        contentType: "application/json",
+        data:id,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function () {
+            alert("success");
+            window.location.href = "memberhomepage.html";
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+
 });
 function formToJSON(kriterijum,naziv,tip,opis,cena,vreme) {
     return JSON.stringify(

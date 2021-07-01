@@ -1,5 +1,7 @@
 package com.example.Gym.controller;
 
+import com.example.Gym.model.DTO.IdDto;
+import com.example.Gym.model.Member;
 import com.example.Gym.model.Schedule;
 import com.example.Gym.model.Training;
 import com.example.Gym.repository.ScheduleRepository;
@@ -8,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value="/shcedule")
@@ -37,4 +39,79 @@ public class ScheduleController {
             Set<Schedule> termini = scheduleService.getallschedules();
             return new ResponseEntity<>(termini, HttpStatus.OK);
         }
+
+    @GetMapping(value="/sortbyvreme",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
+    public ResponseEntity<Set<Schedule>> sortscheduleByDate() {
+        Set<Schedule> termini = scheduleService.getallschedules();
+
+
+        // Kreiramo listu DTO objekata
+        Set<Schedule> terminidtos = new HashSet<>();
+        List<Date> lista_datuma =new ArrayList<>();
+
+        for (Schedule schedule : termini) {
+            lista_datuma.add(schedule.getBeginDate());
+
+        }
+        java.util.Collections.sort(lista_datuma);
+        for(Date naz: lista_datuma){
+            Schedule schedule=scheduleRepository.findOneByBeginDate(naz);
+            terminidtos.add(schedule);
+        }
+
+
+        return new ResponseEntity<>(terminidtos, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value="/sortbycena",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
+    public ResponseEntity<Set<Schedule>> sortscheduleByCena() {
+        Set<Schedule> termini = scheduleService.getallschedules();
+
+
+        // Kreiramo listu DTO objekata
+        Set<Schedule> terminidtos = new HashSet<>();
+        List<Integer> lista_datuma =new ArrayList<>();
+
+        for (Schedule schedule : termini) {
+            lista_datuma.add(schedule.getPrice());
+
+        }
+        java.util.Collections.sort(lista_datuma);
+        for(Integer naz: lista_datuma){
+            Schedule schedule=scheduleRepository.findOneByPrice(naz);
+            terminidtos.add(schedule);
+        }
+
+
+        return new ResponseEntity<>(terminidtos, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/reserveschedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Schedule> Reserveappointment(@RequestBody IdDto idDto) throws Exception {
+        Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Schedule schedule=scheduleService.findById(idDto.getId());
+        Set<Member> members=new HashSet<>();
+        members.add(user);
+        schedule.setMember(members);
+        scheduleService.save(schedule);
+
+
+
+        return new ResponseEntity(schedule, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getreserveschedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Set<Schedule>> reserveschedulees(){
+        Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Set<Schedule> termini=user.getSchedule();
+
+
+
+        return new ResponseEntity(termini, HttpStatus.OK);
+    }
 }

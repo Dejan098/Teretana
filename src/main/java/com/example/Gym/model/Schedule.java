@@ -21,6 +21,9 @@ public class Schedule {
     private Integer price;
 
     @Column
+    private Integer slobodnih_mesta;
+
+    @Column
     private Date beginDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -28,6 +31,11 @@ public class Schedule {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private FitnessCenter fitnesraspored;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "schedule_members", joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
+    private Set<Member> member;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -98,5 +106,21 @@ public class Schedule {
 
     public void setHalls(Set<Hall> halls) {
         this.halls = halls;
+    }
+
+    public Integer getSlobodnih_mesta() {
+        return slobodnih_mesta;
+    }
+
+    public void setSlobodnih_mesta(Integer slobodnih_mesta) {
+        this.slobodnih_mesta = slobodnih_mesta;
+    }
+
+    public Set<Member> getMember() {
+        return member;
+    }
+
+    public void setMember(Set<Member> member) {
+        this.member = member;
     }
 }

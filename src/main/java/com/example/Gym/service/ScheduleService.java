@@ -28,4 +28,15 @@ public class ScheduleService {
     public Set<Schedule> findallbyvreme(Date vremetermina) {
         return scheduleRepository.getAllByBeginDate(vremetermina);
     }
+
+    public Schedule findById(Integer id) {return scheduleRepository.findOneById(id);}
+    public Schedule save(Schedule appointment) throws Exception {
+        Integer broj=appointment.getSlobodnih_mesta();
+        if(broj==0){
+            throw new Exception("Postoji zakazan termin u ovo vreme!");
+        }
+        broj=broj-1;
+        appointment.setSlobodnih_mesta(broj);
+        return scheduleRepository.save(appointment);
+    }
 }

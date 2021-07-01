@@ -9,7 +9,11 @@ import java.util.Set;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
     Set<Schedule> getAllByPrice(Integer cena);
-
+    Schedule findOneByBeginDate(Date datum);
     Set<Schedule> getAllBy();
     Set<Schedule> getAllByBeginDate(Date datum);
+
+    Schedule findOneByPrice(Integer cena);
+
+    Schedule findOneById(Integer id);
 }

@@ -27,8 +27,7 @@ public class Training {
     @Column
     private String duration;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Member member;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Trainer trainer;
