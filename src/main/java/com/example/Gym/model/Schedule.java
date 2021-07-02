@@ -3,6 +3,7 @@ package com.example.Gym.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class Schedule {
     private Integer slobodnih_mesta;
 
     @Column
-    private Date beginDate;
+    private LocalDate beginDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Training training;
@@ -42,7 +43,18 @@ public class Schedule {
     @JoinTable(name = "hall_schedules", joinColumns = @JoinColumn(name = "hall_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "schedule_id", referencedColumnName = "id"))
     private Set<Hall> halls = new HashSet<Hall>();
 
-    public Schedule(Integer id, Integer price, Date beginDate) {
+    public Schedule(Integer id, Integer price, Integer slobodnih_mesta, LocalDate beginDate, Training training, FitnessCenter fitnesraspored, Set<Member> member, Set<Hall> halls) {
+        this.id = id;
+        this.price = price;
+        this.slobodnih_mesta = slobodnih_mesta;
+        this.beginDate = beginDate;
+        this.training = training;
+        this.fitnesraspored = fitnesraspored;
+        this.member = member;
+        this.halls = halls;
+    }
+
+    public Schedule(Integer id, Integer price, LocalDate beginDate) {
         this.id = id;
         this.price = price;
         this.beginDate = beginDate;
@@ -51,7 +63,7 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(Integer id, Integer price, Date beginDate, Training training, FitnessCenter fitnesraspored, Set<Hall> halls) {
+    public Schedule(Integer id, Integer price, LocalDate beginDate, Training training, FitnessCenter fitnesraspored, Set<Hall> halls) {
         this.id = id;
         this.price = price;
         this.beginDate = beginDate;
@@ -76,11 +88,11 @@ public class Schedule {
         this.price = price;
     }
 
-    public Date getBeginDate() {
+    public LocalDate getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(Date beginDate) {
+    public void setBeginDate(LocalDate beginDate) {
         this.beginDate = beginDate;
     }
 

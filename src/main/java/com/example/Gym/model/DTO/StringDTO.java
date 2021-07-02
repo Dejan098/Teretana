@@ -1,5 +1,6 @@
 package com.example.Gym.model.DTO;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class StringDTO {
@@ -8,9 +9,9 @@ public class StringDTO {
     private String tip;
     private String opis;
     private Integer cena;
-    private Date vreme;
+    private LocalDate vreme;
 
-    public StringDTO(String kriterijum, String naziv, String tip, String opis, Integer cena, Date vreme) {
+    public StringDTO(String kriterijum, String naziv, String tip, String opis, Integer cena, LocalDate vreme) {
         this.kriterijum = kriterijum;
         this.naziv = naziv;
         this.tip = tip;
@@ -59,11 +60,11 @@ public class StringDTO {
         this.cena = cena;
     }
 
-    public Date getVreme() {
+    public LocalDate getVreme() {
         return vreme;
     }
 
-    public void setVreme(Date vreme) {
+    public void setVreme(LocalDate vreme) {
         this.vreme = vreme;
     }
 }

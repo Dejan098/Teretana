@@ -20,21 +20,16 @@ public class Member extends User {
     @ManyToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private Set<Schedule> schedule;
 
-
-    public Member(Set<Schedule> schedule) {
-        this.schedule = schedule;
-    }
-
-    public Member(Integer id, String korisnickoime, String password, String namee, String surname, String phoneNumber, String email, Date birthDate, String rola, Boolean active, Set<Schedule> schedule) {
-        super(id, korisnickoime, password, namee, surname, phoneNumber, email, birthDate, rola, active);
-        this.schedule = schedule;
-    }
-
     public Set<Schedule> getSchedule() {
         return schedule;
     }
 
     public void setSchedule(Set<Schedule> schedule) {
+        this.schedule = schedule;
+    }
+
+    public Member(Integer id, String korisnickoime, String password, String namee, String surname, String phoneNumber, String email, Date birthDate, String rola, Boolean active, Set<Schedule> schedule) {
+        super(id, korisnickoime, password, namee, surname, phoneNumber, email, birthDate, rola, active);
         this.schedule = schedule;
     }
 }

@@ -3,7 +3,6 @@ package com.example.Gym.controller;
 import com.example.Gym.model.DTO.IdDto;
 import com.example.Gym.model.Member;
 import com.example.Gym.model.Schedule;
-import com.example.Gym.model.Training;
 import com.example.Gym.repository.ScheduleRepository;
 import com.example.Gym.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RestController
@@ -47,14 +47,14 @@ public class ScheduleController {
 
         // Kreiramo listu DTO objekata
         Set<Schedule> terminidtos = new HashSet<>();
-        List<Date> lista_datuma =new ArrayList<>();
+        List<LocalDate> lista_datuma =new ArrayList<>();
 
         for (Schedule schedule : termini) {
             lista_datuma.add(schedule.getBeginDate());
 
         }
         java.util.Collections.sort(lista_datuma);
-        for(Date naz: lista_datuma){
+        for(LocalDate naz: lista_datuma){
             Schedule schedule=scheduleRepository.findOneByBeginDate(naz);
             terminidtos.add(schedule);
         }
@@ -106,12 +106,33 @@ public class ScheduleController {
     @GetMapping(value="/getreserveschedule", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Set<Schedule>> reserveschedulees(){
+        Set<Schedule> termini = scheduleService.getallschedules();
         Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Set<Schedule> termini=user.getSchedule();
+        Set<Schedule> terminidtos = user.getSchedule();
 
 
 
-        return new ResponseEntity(termini, HttpStatus.OK);
+        return new ResponseEntity(terminidtos, HttpStatus.OK);
+    }
+    @PostMapping(value="/cancelappointment", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Schedule> Cancelppointment(@RequestBody IdDto idDto) throws Exception {
+        Schedule appointment=scheduleService.findById(idDto.getId());
+        LocalDate trenutno_vreme=LocalDate.now();
+        LocalDate date1=appointment.getBeginDate();
+
+        if(trenutno_vreme.isAfter(date1)){
+
+            throw new Exception("Nije moguce otkazivanje proslo je 24h");
+        }
+
+        else {
+            appointment.setMember(null);
+            scheduleRepository.save(appointment);
+
+        }
+
+        return new ResponseEntity(appointment, HttpStatus.OK);
     }
 }

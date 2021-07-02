@@ -6,6 +6,7 @@ import com.example.Gym.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ public class ScheduleService {
         return scheduleRepository.getAllByPrice(cena);
     }
 
-    public Set<Schedule> findallbyvreme(Date vremetermina) {
+    public Set<Schedule> findallbyvreme(LocalDate vremetermina) {
         return scheduleRepository.getAllByBeginDate(vremetermina);
     }
 
@@ -33,7 +34,7 @@ public class ScheduleService {
     public Schedule save(Schedule appointment) throws Exception {
         Integer broj=appointment.getSlobodnih_mesta();
         if(broj==0){
-            throw new Exception("Postoji zakazan termin u ovo vreme!");
+            throw new Exception("Nema slobodnih mesta!");
         }
         broj=broj-1;
         appointment.setSlobodnih_mesta(broj);
