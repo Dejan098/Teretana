@@ -16,4 +16,6 @@ public interface TrainingRepository extends JpaRepository<Training,Integer> {
     Set<Training> getAllByDescription(String description);
 
     Training findOneBySchedule(Schedule schedule);
+
+    Training findOneById(Integer id);
 }

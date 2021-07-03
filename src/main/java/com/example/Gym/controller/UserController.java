@@ -1,5 +1,4 @@
 package com.example.Gym.controller;
-
 import com.example.Gym.model.DTO.UserDTO;
 import com.example.Gym.model.DTO.UserLogin;
 import com.example.Gym.model.Member;
@@ -27,7 +26,7 @@ public class UserController {
     @GetMapping(value="/user",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<User> getKorisnik() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

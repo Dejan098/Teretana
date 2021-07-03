@@ -1,11 +1,9 @@
 package com.example.Gym.controller;
 
-import com.example.Gym.model.DTO.StringDTO;
-import com.example.Gym.model.DTO.UserDTO;
-import com.example.Gym.model.DTO.UserLogin;
-import com.example.Gym.model.Schedule;
-import com.example.Gym.model.Training;
-import com.example.Gym.model.User;
+import com.example.Gym.model.*;
+import com.example.Gym.model.DTO.*;
+import com.example.Gym.repository.OcenaRepository;
+import com.example.Gym.repository.TrainingRepository;
 import com.example.Gym.service.ScheduleService;
 import com.example.Gym.service.TrainingService;
 import com.example.Gym.service.UserService;
@@ -13,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,21 @@ import java.util.Set;
 @RequestMapping(value="/training")
 public class TrainingController {
     private ScheduleService scheduleService;
+
+    private TrainingRepository trainingRepository;
+
+    @Autowired
+    public void setTrainingRepository(TrainingRepository trainingRepository) {
+        this.trainingRepository = trainingRepository;
+    }
+
+    private OcenaRepository ocenaRepository;
+
+    @Autowired
+    public void setOcenaRepository(OcenaRepository ocenaRepository) {
+        this.ocenaRepository = ocenaRepository;
+    }
+
     @Autowired
     public void setScheduleService(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
@@ -86,5 +102,108 @@ public class TrainingController {
        }
        return null;
     }
+
+    @GetMapping(value="/donetrainings", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Set<Training>> donetrainings(){
+        Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Schedule> termini = user.getSchedule();
+        LocalDate trenutno_vreme=LocalDate.now();
+        Set<Training> treninzi = new HashSet<>();
+        for(Schedule schedule:termini){
+            if(schedule.getBeginDate().isBefore(trenutno_vreme)){
+               treninzi.add(schedule.getTraining());
+
+            }
+        }
+
+
+
+
+        return new ResponseEntity(treninzi, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/donetrainingsocenjeni", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Set<Trainingdtoprikaz>> donetrainingsocenjeni(){
+        Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Schedule> termini = user.getSchedule();
+        LocalDate trenutno_vreme=LocalDate.now();
+        Set<Training> treninzi = new HashSet<>();
+        for(Schedule schedule:termini){
+            if(schedule.getBeginDate().isBefore(trenutno_vreme)){
+                treninzi.add(schedule.getTraining());
+
+            }
+        }
+
+        Set<Training> treninzidtos =new HashSet<>();
+
+        for(Training training:treninzi){
+            if(training.getOcena()!=null){
+                treninzidtos.add(training);
+            }
+        }
+
+        Set<Trainingdtoprikaz> treninziprikaz=new HashSet<>();
+
+        for(Training treningic:treninzidtos){
+            Trainingdtoprikaz prikaz=new Trainingdtoprikaz(treningic.getId(), treningic.getName(), treningic.getDescription(),treningic.getType(), treningic.getDuration(),treningic.getOcena().getOcena());
+            treninziprikaz.add(prikaz);
+        }
+
+
+
+
+        return new ResponseEntity(treninziprikaz, HttpStatus.OK);
+    }
+
+
+
+    @GetMapping(value="/donetrainingsnoocena", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Set<Training>> donetrainingsnoocena(){
+        Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Schedule> termini = user.getSchedule();
+        LocalDate trenutno_vreme=LocalDate.now();
+        Set<Training> treninzi = new HashSet<>();
+        for(Schedule schedule:termini){
+            if(schedule.getBeginDate().isBefore(trenutno_vreme)){
+                treninzi.add(schedule.getTraining());
+
+            }
+        }
+
+        Set<Training> treninzidtos =new HashSet<>();
+
+        for(Training training:treninzi){
+            if(training.getOcena()==null){
+                treninzidtos.add(training);
+            }
+        }
+
+
+        return new ResponseEntity(treninzidtos, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/ocenitrenings", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Training> Ocenitrening(@RequestBody Trainingdto idDto) throws Exception {
+        Training trening=trainingService.findOneById(idDto.getId());
+        Ocena ocena=new Ocena();
+        ocena.setOcena(idDto.getOcena());
+        ocenaRepository.save(ocena);
+        trening.setOcena(ocena);
+        trainingRepository.save(trening);
+
+
+
+
+
+        return new ResponseEntity(trening, HttpStatus.OK);
+    }
+
+
 
 }

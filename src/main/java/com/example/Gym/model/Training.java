@@ -33,6 +33,12 @@ public class Training {
     private Trainer trainer;
 
 
+
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ocena_id", referencedColumnName = "id")
+    private Ocena ocena;
+
     @JsonIgnore
     @OneToMany(mappedBy = "training", fetch = FetchType.EAGER)
     private Set<Schedule> schedule=new HashSet<Schedule>();
@@ -87,5 +93,40 @@ public class Training {
 
     public void setDuration(String duration) {
         this.duration = duration;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+
+    public Training(Integer id, String name, String description, String type, String duration, Trainer trainer, Ocena ocena, Set<Schedule> schedule) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.duration = duration;
+        this.trainer = trainer;
+        this.ocena = ocena;
+        this.schedule = schedule;
+    }
+
+    public Ocena getOcena() {
+        return ocena;
+    }
+
+    public void setOcena(Ocena ocena) {
+        this.ocena = ocena;
+    }
+
+    public Set<Schedule> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Set<Schedule> schedule) {
+        this.schedule = schedule;
     }
 }

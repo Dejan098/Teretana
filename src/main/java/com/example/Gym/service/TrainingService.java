@@ -35,4 +35,7 @@ public class TrainingService {
     public Training findallbytermin(Schedule schedule) {
         return trainingRepository.findOneBySchedule(schedule);
     }
+
+    public Training findOneById(Integer id) { return trainingRepository.findOneById(id);
+    }
 }

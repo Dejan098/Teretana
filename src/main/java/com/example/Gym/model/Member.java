@@ -20,6 +20,10 @@ public class Member extends User {
     @ManyToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private Set<Schedule> schedule;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    private Set<Ocena> ocena=new HashSet<Ocena>();
+
     public Set<Schedule> getSchedule() {
         return schedule;
     }
