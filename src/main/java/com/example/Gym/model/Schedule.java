@@ -25,6 +25,9 @@ public class Schedule {
     private Integer slobodnih_mesta;
 
     @Column
+    private Integer prijavljenih;
+
+    @Column
     private LocalDate beginDate;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -70,6 +73,26 @@ public class Schedule {
         this.training = training;
         this.fitnesraspored = fitnesraspored;
         this.halls = halls;
+    }
+
+    public Schedule(Integer id, Integer price, Integer slobodnih_mesta, Integer prijavljenih, LocalDate beginDate, Training training, FitnessCenter fitnesraspored, Set<Member> member, Set<Hall> halls) {
+        this.id = id;
+        this.price = price;
+        this.slobodnih_mesta = slobodnih_mesta;
+        this.prijavljenih = prijavljenih;
+        this.beginDate = beginDate;
+        this.training = training;
+        this.fitnesraspored = fitnesraspored;
+        this.member = member;
+        this.halls = halls;
+    }
+
+    public Integer getPrijavljenih() {
+        return prijavljenih;
+    }
+
+    public void setPrijavljenih(Integer prijavljenih) {
+        this.prijavljenih = prijavljenih;
     }
 
     public Integer getId() {

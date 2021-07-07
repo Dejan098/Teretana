@@ -7,10 +7,20 @@
     <script src="js/kreiranjetermina.js"></script>
 </head>
 <body>
+<form id="kreiranjeForm">
+    <label for="price">price:</label>
+    <input id="price" type="text"/>
+    <label for="sala">sala:</label>
+    <input id="sala" type="number"/>
+    <label for="training">training:</label>
+    <input id="training" type="number"/>
+    <label for="beginDate">beginDate:</label>
+    <input id="beginDate" type="datetime-local"/>
+    <input type="submit" id="btnSearchTraining"/>
+</form>
 <div id="trainings">
-    <h1>rezervisani termini</h1>
+    <h1>kreirani termini</h1>
     <br>
-
     <div class="container">
         <table id="schedule">
             <thead>

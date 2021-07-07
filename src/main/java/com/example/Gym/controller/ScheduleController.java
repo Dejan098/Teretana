@@ -1,9 +1,14 @@
 package com.example.Gym.controller;
 
 import com.example.Gym.model.DTO.IdDto;
+import com.example.Gym.model.DTO.ScheduleDTO;
+import com.example.Gym.model.Hall;
 import com.example.Gym.model.Member;
 import com.example.Gym.model.Schedule;
+import com.example.Gym.model.Trainer;
+import com.example.Gym.repository.HallRepository;
 import com.example.Gym.repository.ScheduleRepository;
+import com.example.Gym.repository.TrainingRepository;
 import com.example.Gym.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +27,18 @@ public class ScheduleController {
 
     private ScheduleRepository scheduleRepository;
     private ScheduleService scheduleService;
+    private HallRepository hallRepository;
+    private TrainingRepository trainingRepository;
+
+    @Autowired
+    public void setTrainingRepository(TrainingRepository trainingRepository) {
+        this.trainingRepository = trainingRepository;
+    }
+
+    @Autowired
+    public void setHallRepository(HallRepository hallRepository) {
+        this.hallRepository = hallRepository;
+    }
 
     @Autowired
     public void setScheduleService(ScheduleService scheduleService) {
@@ -87,12 +104,44 @@ public class ScheduleController {
         return new ResponseEntity<>(terminidtos, HttpStatus.OK);
     }
 
+    @PostMapping(value="/createschedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('TRAINER')")
+    public ResponseEntity<Schedule> Createschedule(@RequestBody ScheduleDTO idDto) throws Exception {
+        Trainer user = (Trainer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Hall sala=hallRepository.findOneById(idDto.getSala());
+        Set<Schedule> termini_u_sali=sala.getScheduleset();
+        for(Schedule termin:termini_u_sali){
+            if(termin.getBeginDate().equals(idDto.getBeginDate())){
+                throw new Exception("postoji kreiran termin za to vreme u toj sali");
+            }
+        }
+        Schedule schedule=new Schedule();
+        schedule.setBeginDate(idDto.getBeginDate());
+        schedule.setPrice(idDto.getPrice());
+        schedule.setFitnesraspored(user.getFitnescentar());
+        schedule.setTraining(trainingRepository.findOneById(idDto.getTraining()));
+
+
+        schedule.setSlobodnih_mesta(sala.getCapacity());
+        Set<Hall>lista_sala=new HashSet<Hall>();
+        lista_sala.add(sala);
+        schedule.setHalls(lista_sala);
+        scheduleRepository.save(schedule);
+
+
+
+
+        return new ResponseEntity(schedule, HttpStatus.OK);
+    }
+
     @PostMapping(value="/reserveschedule", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Schedule> Reserveappointment(@RequestBody IdDto idDto) throws Exception {
         Member user = (Member) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Schedule schedule=scheduleService.findById(idDto.getId());
+        schedule.setSlobodnih_mesta(schedule.getSlobodnih_mesta()-1);
+        schedule.setPrijavljenih(schedule.getPrijavljenih()+1);
         Set<Member> members=new HashSet<>();
         members.add(user);
         schedule.setMember(members);
@@ -131,10 +180,51 @@ public class ScheduleController {
 
         else {
             appointment.setMember(null);
+            appointment.setSlobodnih_mesta(appointment.getSlobodnih_mesta()+1);
+            appointment.setPrijavljenih(appointment.getPrijavljenih()-1);
             scheduleRepository.save(appointment);
 
         }
 
         return new ResponseEntity(appointment, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/deleteschedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('TRAINER')")
+    public ResponseEntity<Schedule> DeleteSchedule(@RequestBody IdDto idDto) throws Exception {
+        Schedule appointment=scheduleService.findById(idDto.getId());
+        scheduleRepository.delete(appointment);
+
+        return new ResponseEntity(appointment, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/izmenieschedule", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('TRAINER')")
+    public ResponseEntity<Schedule> IzmeniSchedule(@RequestBody ScheduleDTO idDto) throws Exception {
+        Schedule schedule=scheduleRepository.findOneById(idDto.getId());
+        Hall sala=hallRepository.findOneById(idDto.getSala());
+        Set<Schedule> termini_u_sali=sala.getScheduleset();
+        for(Schedule termin:termini_u_sali){
+            if(termin.getBeginDate().equals(idDto.getBeginDate())){
+                throw new Exception("postoji kreiran termin za to vreme u toj sali");
+            }
+        }
+        schedule.setBeginDate(idDto.getBeginDate());
+        schedule.setPrice(idDto.getPrice());
+        schedule.setTraining(trainingRepository.findOneById(idDto.getTraining()));
+
+
+        schedule.setSlobodnih_mesta(sala.getCapacity());
+        Set<Hall>lista_sala=new HashSet<Hall>();
+        lista_sala.add(sala);
+        schedule.setHalls(lista_sala);
+        scheduleRepository.save(schedule);
+
+
+
+
+        return new ResponseEntity(schedule, HttpStatus.OK);
     }
 }

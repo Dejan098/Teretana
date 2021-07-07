@@ -27,6 +27,21 @@ public class Hall {
     @ManyToMany(mappedBy = "halls", fetch = FetchType.EAGER)
     private Set<Schedule> scheduleset = new HashSet<Schedule>();
 
+    public FitnessCenter getFitnessala() {
+        return fitnessala;
+    }
+
+    public void setFitnessala(FitnessCenter fitnessala) {
+        this.fitnessala = fitnessala;
+    }
+
+    public Set<Schedule> getScheduleset() {
+        return scheduleset;
+    }
+
+    public void setScheduleset(Set<Schedule> scheduleset) {
+        this.scheduleset = scheduleset;
+    }
 
     public Hall(Integer id, Integer capacity, String label) {
         this.id = id;
