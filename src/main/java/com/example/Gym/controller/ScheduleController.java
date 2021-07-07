@@ -1,11 +1,8 @@
 package com.example.Gym.controller;
 
+import com.example.Gym.model.*;
 import com.example.Gym.model.DTO.IdDto;
 import com.example.Gym.model.DTO.ScheduleDTO;
-import com.example.Gym.model.Hall;
-import com.example.Gym.model.Member;
-import com.example.Gym.model.Schedule;
-import com.example.Gym.model.Trainer;
 import com.example.Gym.repository.HallRepository;
 import com.example.Gym.repository.ScheduleRepository;
 import com.example.Gym.repository.TrainingRepository;
@@ -80,6 +77,18 @@ public class ScheduleController {
         return new ResponseEntity<>(terminidtos, HttpStatus.OK);
     }
 
+    @GetMapping(value="/schedulesoftrainer", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('TRAINER')")
+    public ResponseEntity<Set<Schedule>> gettrainerschedules(){
+
+        Trainer user = (Trainer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        FitnessCenter centar =user.getFitnescentar();
+
+
+
+        return new ResponseEntity(centar.getSchedulers(), HttpStatus.OK);
+    }
 
     @GetMapping(value="/sortbycena",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
     public ResponseEntity<Set<Schedule>> sortscheduleByCena() {

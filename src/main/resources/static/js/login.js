@@ -36,6 +36,10 @@ $(document).ready(function () {
 					window.location.href = "trainerhomepage.html";
 				}
 
+				if (data['role']==='admin'){
+					window.location.href = "adminhomepage.html";
+				}
+
 
 	        },
 	        error: function (data) {

@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/shcedule/schedulesoftrainer",
+        url: "http://localhost:8081/fitnesscenter/getfitnescenter",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -13,15 +13,18 @@ $(document).ready(function () {
             for (i = 0; i < data.length; i++) {
                 var row = "<tr>";
                 row += "<td>" + data[i]['id'] + "</td>";
-                row += "<td>" + data[i]['price'] + "</td>";
-                row += "<td>" + data[i]['beginDate'] + "</td>";
-                row += "<td>" + data[i]['training']['name'] + "</td>";
-                var btn = "<button class='btnCancelAppointment' id = " + data[i]['id'] + ">izbrisi termin</button>";
+                row += "<td>" + data[i]['name'] + "</td>";
+                row += "<td>" + data[i]['address'] + "</td>";
+                row += "<td>" + data[i]['phone']+ "</td>";
+                row += "<td>" + data[i]['email']+ "</td>";
+                var btn = "<button class='btnCancelAppointment' id = " + data[i]['id'] + ">izbrisi centar</button>";
                 var btn2 = "<button class='btnIzmenilAppointment' id = " + data[i]['id'] + ">izmeni</button>";
+                var btn3 = "<button class='btndodajsalu' id = " + data[i]['id'] + ">dodajsalu</button>";
 
 
                 row += "<td>" + btn + "</td>";
                 row += "<td>" + btn2 + "</td>";
+                row += "<td>" + btn3 + "</td>";
 
 
 
@@ -35,12 +38,11 @@ $(document).ready(function () {
         }
     });
 });
-
 $(document).on('click', '.btnCancelAppointment', function(){
     var id=this.id;
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/shcedule/deleteschedule",
+        url: "http://localhost:8081/fitnesscenter/deletefitnescenter",
         dataType: "json",
         contentType: "application/json",
         data:id,
@@ -51,36 +53,7 @@ $(document).on('click', '.btnCancelAppointment', function(){
         },
         success: function () {
             alert("success");
-            window.location.href = "trainerhomepage.html";
-        },
-        error: function (error) {
-            alert(error);
-        }
-    });
-
-});
-
-$(document).on('click', '.btnIzmenilAppointment', function(){
-    var id=this.id;
-    var price = $("#price").val();
-    var sala=$('#sala').val();
-    var beginDate=$('#beginDate').val();
-    var training=$('#training').val();
-    var myJSON = formToJSON2(id,price,sala,beginDate,training)
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/shcedule/izmenieschedule",
-        dataType: "json",
-        contentType: "application/json",
-        data:myJSON,
-        beforeSend: function (xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
-            }
-        },
-        success: function () {
-            alert("success");
-            window.location.href = "trainerhomepage.html";
+            window.location.href = "adminhomepage.html";
         },
         error: function (error) {
             alert(error);
@@ -91,14 +64,14 @@ $(document).on('click', '.btnIzmenilAppointment', function(){
 
 $(document).on('click', '#btnSearchTraining', function(){
     var id=this.id;
-    var price = $("#price").val();
-    var sala=$('#sala').val();
-    var beginDate=$('#beginDate').val();
-    var training=$('#training').val();
-    var myJSON = formToJSON(price,sala,beginDate,training)
+    var name = $("#name").val();
+    var address=$('#address').val();
+    var phone=$('#phone').val();
+    var email=$('#email').val();
+    var myJSON = formToJSON(name,address,phone,email)
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/shcedule/createschedule",
+        url: "http://localhost:8081/fitnesscenter/creatfitnescenter",
         dataType: "json",
         contentType: "application/json",
         data:myJSON,
@@ -109,38 +82,67 @@ $(document).on('click', '#btnSearchTraining', function(){
         },
         success: function () {
             alert("success");
-            window.location.href = "trainerhomepage.html";
+            window.location.href = "adminhomepage.html";
 
         },
         error: function (error) {
             alert(error);
-            window.location.href = "trainerhomepage.html";
+
         }
 
     });
 
 });
+$(document).on('click', '.btnIzmenilAppointment', function(){
+    var id=this.id;
+    var name = $("#name").val();
+    var address=$('#address').val();
+    var phone=$('#phone').val();
+    var email=$('#email').val();
+    var myJSON = formToJSON2(id,name,address,phone,email)
 
-function formToJSON(price,sala,beginDate,training) {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/fitnesscenter/izmenicentar",
+        dataType: "json",
+        contentType: "application/json",
+        data:myJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function () {
+            alert("success");
+            window.location.href = "adminhomepage.html";
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+
+});
+
+function formToJSON(name,address,phone,email) {
     return JSON.stringify(
         {
-            "price": price,
-            "sala":sala,
-            "beginDate":beginDate,
-            "training":training
+            "name": name,
+            "address":address,
+            "phone":phone,
+            "email":email
 
         }
     );
 }
 
-function formToJSON2(id,price,sala,beginDate,training) {
+function formToJSON2(id,name,address,phone,email) {
     return JSON.stringify(
         {
             "id":id,
-            "price": price,
-            "sala":sala,
-            "beginDate":beginDate,
-            "training":training
+            "name": name,
+            "address":address,
+            "phone":phone,
+            "email":email
 
         }
     );
