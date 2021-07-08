@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pregled trenera</title>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/pregledtrenera.js"></script>
+</head>
+<body>
+<form id="registrationFrom">
+    <label for="email">E-mail:</label>
+    <input id="email" type="text"/>
+    <label for="password">Lozinka:</label>
+    <input id="password" type="password"/>
+    <label for="username">username:</label>
+    <input id="username" type="text"/>
+    <label for="namee">ime:</label>
+    <input id="namee" type="text"/>
+    <label for="surname">prezime:</label>
+    <input id="surname" type="text"/>
+    <label for="phoneNumber">broj telefona:</label>
+    <input id="phoneNumber" type="text"/>
+    <label for="birthDate">datum rodjenja:</label>
+    <input id="birthDate" type="date"/>
+    <label for="fitnescentar">id fitnescentra:</label>
+    <input id="fitnescentar" type="number"/>
+    <input type="submit">
+</form>
+<div id="trainings">
+    <h1>kreirani treneri koji nisu odobreni</h1>
+    <br>
+    <div class="container">
+        <table id="schedule">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>korisnicko ime</th>
+                <th>surname</th>
+                <th>phoneNumber</th>
+                <th>email</th>
+                <th>birthDate</th>
+                <th>enabled</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="trainings2">
+    <h1>kreirani treneri</h1>
+    <br>
+    <div class="container">
+        <table id="schedule2">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>korisnicko ime</th>
+                <th>surname</th>
+                <th>phoneNumber</th>
+                <th>email</th>
+                <th>birthDate</th>
+                <th>enabled</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+</body>
+</html>

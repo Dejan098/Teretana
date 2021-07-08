@@ -67,12 +67,35 @@ public class UserService {
         u.setNamee(userRequest.getNamee());
         u.setEmail(userRequest.getEmail());
         u.setRola("trainer");
-        u.setActive(true);
+        u.setActive(false);
         u.setBirthDate(userRequest.getBirthDate());
         u.setPhoneNumber(userRequest.getPhoneNumber());
         // pre nego sto postavimo lozinku u atribut hesiramo je
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         u.setEnabled(false);
+
+        List<Authority> auth = authService.findByname("ROLE_TRAINER");
+        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        u.setAuthorities(auth);
+
+        u = this.userRepository.save(u);
+        return u;
+    }
+
+    public User saveTrener2(UserRequest userRequest) {
+        Trainer u = new Trainer();
+        u.setKorisnickoime((u.getKorisnickoime()));
+        u.setKorisnickoime(userRequest.getUsername());
+        u.setSurname(userRequest.getSurname());
+        u.setNamee(userRequest.getNamee());
+        u.setEmail(userRequest.getEmail());
+        u.setRola("trainer");
+        u.setActive(true);
+        u.setBirthDate(userRequest.getBirthDate());
+        u.setPhoneNumber(userRequest.getPhoneNumber());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setEnabled(true);
 
         List<Authority> auth = authService.findByname("ROLE_TRAINER");
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
