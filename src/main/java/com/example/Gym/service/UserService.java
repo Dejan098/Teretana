@@ -1,10 +1,7 @@
 package com.example.Gym.service;
 
-import com.example.Gym.model.Authority;
+import com.example.Gym.model.*;
 import com.example.Gym.model.DTO.UserDTO;
-import com.example.Gym.model.Member;
-import com.example.Gym.model.User;
-import com.example.Gym.model.UserRequest;
 import com.example.Gym.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,6 +52,29 @@ public class UserService {
         u.setEnabled(true);
 
         List<Authority> auth = authService.findByname("ROLE_USER");
+        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        u.setAuthorities(auth);
+
+        u = this.userRepository.save(u);
+        return u;
+    }
+
+    public User saveTrener(UserRequest userRequest) {
+        Trainer u = new Trainer();
+        u.setKorisnickoime((u.getKorisnickoime()));
+        u.setKorisnickoime(userRequest.getUsername());
+        u.setSurname(userRequest.getSurname());
+        u.setNamee(userRequest.getNamee());
+        u.setEmail(userRequest.getEmail());
+        u.setRola("trainer");
+        u.setActive(true);
+        u.setBirthDate(userRequest.getBirthDate());
+        u.setPhoneNumber(userRequest.getPhoneNumber());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setEnabled(false);
+
+        List<Authority> auth = authService.findByname("ROLE_TRAINER");
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
         u.setAuthorities(auth);
 

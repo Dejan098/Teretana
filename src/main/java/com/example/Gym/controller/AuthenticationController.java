@@ -92,4 +92,19 @@ public class AuthenticationController {
     }
 
 
+    @PostMapping("/signuptrener")
+    public ResponseEntity<User> addtrener(@RequestBody UserRequest userRequest, UriComponentsBuilder ucBuilder) throws ResourceConflictException {
+
+        User existUser = this.userService.findByEmail(userRequest.getEmail());
+        if (existUser != null) {
+            throw new ResourceConflictException(userRequest.getId(), "Username already exists");
+        }
+
+        User user = this.userService.saveTrener(userRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+
 }
