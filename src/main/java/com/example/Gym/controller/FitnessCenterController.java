@@ -1,6 +1,7 @@
 package com.example.Gym.controller;
 
 import com.example.Gym.model.DTO.FitnessCenterDTO;
+import com.example.Gym.model.DTO.HallDto;
 import com.example.Gym.model.DTO.IdDto;
 import com.example.Gym.model.DTO.ScheduleDTO;
 import com.example.Gym.model.FitnessCenter;
@@ -8,6 +9,7 @@ import com.example.Gym.model.Hall;
 import com.example.Gym.model.Schedule;
 import com.example.Gym.model.Trainer;
 import com.example.Gym.repository.FitnessCenterRepository;
+import com.example.Gym.repository.HallRepository;
 import com.example.Gym.service.FitnessCenterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,12 @@ public class FitnessCenterController {
 
     private FitnessCenterService fitnessService;
     private FitnessCenterRepository fitnessCenterRepository;
+    private HallRepository hallRepository;
+
+    @Autowired
+    public void setHallRepository(HallRepository hallRepository) {
+        this.hallRepository = hallRepository;
+    }
 
     @Autowired
     public void setFitnessCenterRepository(FitnessCenterRepository fitnessCenterRepository) {
@@ -88,5 +96,60 @@ public class FitnessCenterController {
 
         return new ResponseEntity(centar, HttpStatus.OK);
     }
+
+    @PostMapping(value="/gethalls", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Set<Hall>> GetHalls(@RequestBody IdDto idDto) throws Exception {
+
+        FitnessCenter centar=fitnessCenterRepository.findOneById(idDto.getId());
+
+
+        return new ResponseEntity(centar.getHalls(), HttpStatus.OK);
+    }
+
+    @PostMapping(value="/createhalls", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Hall> createHalls(@RequestBody HallDto idDto) throws Exception {
+
+
+      Hall sala=new Hall();
+      sala.setCapacity(idDto.getCapacity());
+      sala.setFitnessala(fitnessCenterRepository.findOneById(idDto.getFitnessala()));
+      sala.setLabel(idDto.getLabel());
+      hallRepository.save(sala);
+
+
+        return new ResponseEntity(sala, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/izmenihalls", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Hall> izmenihalls(@RequestBody HallDto idDto) throws Exception {
+
+
+        Hall sala=hallRepository.findOneById(idDto.getId());
+        sala.setCapacity(idDto.getCapacity());
+        sala.setFitnessala(fitnessCenterRepository.findOneById(idDto.getFitnessala()));
+        sala.setLabel(idDto.getLabel());
+        hallRepository.save(sala);
+
+
+        return new ResponseEntity(sala, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/obrisisalu", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Hall> obrisisalu(@RequestBody IdDto idDto) throws Exception {
+
+
+        Hall sala=hallRepository.findOneById(idDto.getId());
+        hallRepository.delete(sala);
+
+
+        return new ResponseEntity(sala, HttpStatus.OK);
+    }
+
+
+
 
 }
