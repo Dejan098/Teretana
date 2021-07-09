@@ -179,6 +179,29 @@ public class TrainingController {
             return new ResponseEntity<>(treninzi, HttpStatus.OK);
         }
 
+        if(kriterijum.equals("nazivu tipu i opisu")){
+            Set<Training> treninzi = trainingRepository.getAllByNameAndTypeAndDescription(stringdto.getNaziv(),stringdto.getTip(),stringdto.getOpis());
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+        }
+
+        if(kriterijum.equals("nazivu tipu i ceni")){
+            Set<Schedule> termini=scheduleService.findallbycena(stringdto.getCena());
+            Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi = trainingRepository.getAllByNameAndTypeAndSchedule(stringdto.getNaziv(),stringdto.getTip(),termin);
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+        }
+
+        if(kriterijum.equals("svemu")){
+            Set<Schedule> termini=scheduleRepository.getAllByPriceAndBeginDate(stringdto.getCena(),stringdto.getVreme());
+            Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi=trainingRepository.getAllByNameAndTypeAndDescriptionAndSchedule(stringdto.getNaziv(),stringdto.getTip(),stringdto.getOpis(),termin);
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+        }
+
 
        return null;
     }

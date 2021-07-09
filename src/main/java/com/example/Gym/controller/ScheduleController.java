@@ -55,12 +55,12 @@ public class ScheduleController {
         }
 
     @GetMapping(value="/sortbyvreme",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
-    public ResponseEntity<Set<Schedule>> sortscheduleByDate() {
+    public ResponseEntity<List<Schedule>> sortscheduleByDate() {
         Set<Schedule> termini = scheduleService.getallschedules();
 
 
         // Kreiramo listu DTO objekata
-        Set<Schedule> terminidtos = new HashSet<>();
+        List<Schedule> terminidtos = new ArrayList<>();
         List<LocalDate> lista_datuma =new ArrayList<>();
 
         for (Schedule schedule : termini) {
@@ -91,12 +91,12 @@ public class ScheduleController {
     }
 
     @GetMapping(value="/sortbycena",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
-    public ResponseEntity<Set<Schedule>> sortscheduleByCena() {
+    public ResponseEntity<List<Schedule>> sortscheduleByCena() {
         Set<Schedule> termini = scheduleService.getallschedules();
 
 
         // Kreiramo listu DTO objekata
-        Set<Schedule> terminidtos = new HashSet<>();
+        List<Schedule> terminidtos = new ArrayList<>();
         List<Integer> lista_datuma =new ArrayList<>();
 
         for (Schedule schedule : termini) {

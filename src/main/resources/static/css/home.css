@@ -1,0 +1,30 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar {
+    list-style-type: none;
+    background-color: #d8afaf;
+    overflow: hidden;
+    text-align: right;
+    padding: 0;
+    margin-bottom: 3em;
+}
+
+body {
+    align-items: center;
+    background-color: #d8afaf;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form {
+    background-color: azure;
+    border-radius: 20px;
+    box-sizing: border-box;
+    height: 500px;
+    padding: 20px;
+    width: 320px;
+}
