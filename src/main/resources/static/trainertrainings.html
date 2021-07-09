@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>treninzi</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/trainertrainings.js"></script>
+</head>
+<body>
+<div id="trainings">
+    <h1>kreiraj treninge</h1>
+    <form id="kreiranjeForm">
+        <label for="name">name:</label>
+        <input id="name" type="text"/>
+        <label for="description">description:</label>
+        <input id="description" type="text"/>
+        <label for="type">type:</label>
+        <input id="type" type="text"/>
+        <label for="duration">duration:</label>
+        <input id="duration" type="text"/>
+        <input type="submit" id="btnSearchTraining2"/>
+    </form>
+    <h1>Svi treninzi</h1>
+    <br>
+    <label for="kriterijum">izaberi kriterijum pretrage:</label>
+
+    <select name="kriterijum" id="kriterijum">
+        <option value="naziv">naziv</option>
+        <option value="tip">tip</option>
+        <option value="opis">opis</option>
+        <option value="cena">cena</option>
+        <option value="vreme">vreme</option>
+        <option value="nazivu i tipu">nazivu i tipu</option>
+        <option value="nazivu i opisu">nazivu i opisu</option>
+        <option value="nazivu i ceni">nazivu i ceni</option>
+        <option value="nazivu i vremenu">nazivu i vremenu</option>
+        <option value="tipu i opisu">tipu i opisu</option>
+        <option value="tipu i ceni">tipu i ceni</option>
+        <option value="tipu i vremenu">tipu i vremenu</option>
+        <option value="opisu i ceni">opisu i ceni</option>
+        <option value="opisu i vremenu">opisu i vremenu</option>
+        <option value="ceni i vremenu">ceni i vremenu</option>
+        <option value="nazivu tipu i opisu">nazivu tipu i opisu</option>
+        <option value="nazivu tipu i ceni">nazivu tipu i ceni</option>
+        <option value="svemu">svim kriterijumima</option>
+
+    </select>
+    <input type="search" id="naziv" name="q" placeholder="Unesite naziv treninga"/>
+    <input type="search" id="tip" name="q" placeholder="Unesite tip"/>
+    <input type="search" id="opis" name="q" placeholder="Unesite opis"/>
+    <input type="search" id="cena" name="q" placeholder="Unesite cenu termina"/>
+    <input type="search" id="vreme" type="date" name="q" placeholder="Unesite vreme treninga"/>
+
+    <input type="submit" id="btnSearchTraining"/>
+    <br>
+
+    <div class="container">
+        <table id="training">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>Naziv treninga</th>
+                <th>opis</th>
+                <th>tip treninga</th>
+                <th>trajanje</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <div class="container">
+        <h1>Sortiraj po Datumu</h1>
+        <input type="submit"  id="btnSortbyDatum"/>
+        <h1>Sortiraj po Ceni</h1>
+        <input type="submit"  id="btnSortbyCena"/>
+        <table id="schedule">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>cena</th>
+                <th>pocetak treninga</th>
+                <th>Naziv Treninga</th>
+                <th>fitnes raspored</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+</body>
+</html>

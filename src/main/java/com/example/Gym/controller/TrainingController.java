@@ -308,5 +308,23 @@ public class TrainingController {
     }
 
 
+    @PostMapping(value="/createtrening", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('TRAINER')")
+    public ResponseEntity<Training> CreateTrening(@RequestBody KreirajDTO idDto) throws Exception {
+        Training trening=new Training();
+        trening.setName(idDto.getName());
+        trening.setDescription(idDto.getDescription());
+        trening.setDuration(idDto.getDuration());
+        trening.setType(idDto.getType());
+        trainingRepository.save(trening);
+
+
+
+
+
+        return new ResponseEntity(trening, HttpStatus.OK);
+    }
+
+
 
 }
