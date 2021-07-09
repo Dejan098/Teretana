@@ -13,6 +13,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
     Set<Schedule> getAllBy();
     Set<Schedule> getAllByBeginDate(LocalDate datum);
 
+    Set<Schedule> getAllByPriceAndBeginDate(Integer cena,LocalDate datum);
+
     Schedule findOneByPrice(Integer cena);
 
     Schedule findOneById(Integer id);

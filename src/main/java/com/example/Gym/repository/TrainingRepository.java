@@ -11,6 +11,15 @@ public interface TrainingRepository extends JpaRepository<Training,Integer> {
 
     Set<Training> getAllByName(String name);
 
+    Set<Training> getAllByNameAndType(String name,String type);
+    Set<Training> getAllByNameAndDescription(String name,String description);
+
+    Set<Training> getAllByTypeAndDescription(String name,String description);
+
+    Set<Training> getAllByNameAndSchedule(String name,Schedule schedules);
+    Set<Training> getAllByTypeAndSchedule(String name,Schedule schedules);
+    Set<Training> getAllByDescriptionAndSchedule(String name,Schedule schedules);
+
     Set<Training> getAllByType(String type);
 
     Set<Training> getAllByDescription(String description);

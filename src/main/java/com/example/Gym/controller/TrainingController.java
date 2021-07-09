@@ -3,6 +3,7 @@ package com.example.Gym.controller;
 import com.example.Gym.model.*;
 import com.example.Gym.model.DTO.*;
 import com.example.Gym.repository.OcenaRepository;
+import com.example.Gym.repository.ScheduleRepository;
 import com.example.Gym.repository.TrainingRepository;
 import com.example.Gym.service.ScheduleService;
 import com.example.Gym.service.TrainingService;
@@ -25,6 +26,9 @@ public class TrainingController {
     private ScheduleService scheduleService;
 
     private TrainingRepository trainingRepository;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @Autowired
     public void setTrainingRepository(TrainingRepository trainingRepository) {
@@ -72,11 +76,11 @@ public class TrainingController {
            Set<Training> treninzi = trainingService.findallbynaziv(stringdto.getNaziv());
            return new ResponseEntity<>(treninzi, HttpStatus.OK);
        }
-       else if (kriterijum.equals("tip")){
+       if (kriterijum.equals("tip")){
            Set<Training> treninzi = trainingService.findallbytip(stringdto.getTip());
            return new ResponseEntity<>(treninzi, HttpStatus.OK);
        }
-       else if(kriterijum.equals("opis")){
+       if(kriterijum.equals("opis")){
            Set<Training> treninzi = trainingService.findallbyopis(stringdto.getOpis());
            return new ResponseEntity<>(treninzi, HttpStatus.OK);
        }
@@ -100,6 +104,82 @@ public class TrainingController {
 
          return new ResponseEntity<>(treninzi, HttpStatus.OK);
        }
+       if(kriterijum.equals("nazivu i tipu")){
+            Set<Training> treninzi = trainingRepository.getAllByNameAndType(stringdto.getNaziv(),stringdto.getTip());
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+
+       }
+       if(kriterijum.equals("nazivu i opisu")){
+            Set<Training> treninzi = trainingRepository.getAllByNameAndDescription(stringdto.getNaziv(),stringdto.getOpis());
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+
+       }
+       if(kriterijum.equals("nazivu i ceni")){
+            Set<Schedule> termini=scheduleService.findallbycena(stringdto.getCena());
+            Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi = trainingRepository.getAllByNameAndSchedule(stringdto.getNaziv(), termin);
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+
+       }
+       if(kriterijum.equals("nazivu i vremenu")){
+           Set<Schedule> termini=scheduleService.findallbyvreme(stringdto.getVreme());
+           Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi = trainingRepository.getAllByNameAndSchedule(stringdto.getNaziv(), termin);
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+
+       }
+       if(kriterijum.equals("tipu i opisu")){
+            Set<Training> treninzi = trainingRepository.getAllByTypeAndDescription(stringdto.getTip(),stringdto.getOpis());
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+       }
+       if(kriterijum.equals("tipu i ceni")){
+           Set<Schedule> termini=scheduleService.findallbycena(stringdto.getCena());
+           Set<Training> treninzi = new HashSet<>();
+           for(Schedule termin:termini) {
+               treninzi = trainingRepository.getAllByTypeAndSchedule(stringdto.getTip(), termin);
+           }
+           return new ResponseEntity<>(treninzi, HttpStatus.OK);
+       }
+       if(kriterijum.equals("tipu i vremenu")){
+           Set<Schedule> termini=scheduleService.findallbyvreme(stringdto.getVreme());
+           Set<Training> treninzi = new HashSet<>();
+           for(Schedule termin:termini) {
+               treninzi = trainingRepository.getAllByTypeAndSchedule(stringdto.getTip(), termin);
+           }
+           return new ResponseEntity<>(treninzi, HttpStatus.OK);
+       }
+       if(kriterijum.equals("opisu i ceni")){
+           Set<Schedule> termini=scheduleService.findallbycena(stringdto.getCena());
+           Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi = trainingRepository.getAllByDescriptionAndSchedule(stringdto.getOpis(), termin);
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+       }
+
+       if(kriterijum.equals("opisu i vremenu")){
+           Set<Schedule> termini=scheduleService.findallbyvreme(stringdto.getVreme());
+            Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi = trainingRepository.getAllByDescriptionAndSchedule(stringdto.getOpis(), termin);
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+       }
+
+        if(kriterijum.equals("ceni i vremenu")){
+            Set<Schedule> termini=scheduleRepository.getAllByPriceAndBeginDate(stringdto.getCena(),stringdto.getVreme());
+            Set<Training> treninzi = new HashSet<>();
+            for(Schedule termin:termini) {
+                treninzi.add(termin.getTraining());
+            }
+            return new ResponseEntity<>(treninzi, HttpStatus.OK);
+        }
+
+
        return null;
     }
 
