@@ -31,9 +31,10 @@ public class ScheduleService {
     }
 
     public Schedule findById(Integer id) {return scheduleRepository.findOneById(id);}
+
     public Schedule save(Schedule appointment) throws Exception {
         Integer broj=appointment.getSlobodnih_mesta();
-        if(broj==0){
+        if(broj<=0){
             throw new Exception("Nema slobodnih mesta!");
         }
         broj=broj-1;
